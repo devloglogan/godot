@@ -1808,6 +1808,12 @@ Size2 OpenXRAPI::get_recommended_target_size() {
 	RenderingServer *rendering_server = RenderingServer::get_singleton();
 	ERR_FAIL_NULL_V(view_configuration_views, Size2());
 
+	print_line("Not using override!!");
+	// if (render_target_size_override != Size2i{ 0, 0 }) {
+	// 	print_line("Using override!!");
+	// 	return render_target_size_override;
+	// }
+
 	Size2 target_size;
 
 	if (rendering_server && rendering_server->is_on_render_thread()) {
@@ -2342,6 +2348,12 @@ RID OpenXRAPI::get_depth_texture() {
 	}
 }
 
+XrCompositionLayerProjection *OpenXRAPI::get_projection_layer() {
+	ERR_NOT_ON_RENDER_THREAD_V(nullptr);
+
+	return &render_state.projection_layer;
+}
+
 void OpenXRAPI::post_draw_viewport(RID p_render_target) {
 	// Must be called from rendering thread!
 	ERR_NOT_ON_RENDER_THREAD;
@@ -2439,7 +2451,7 @@ void OpenXRAPI::end_frame() {
 		layer_flags |= XR_COMPOSITION_LAYER_BLEND_TEXTURE_SOURCE_ALPHA_BIT;
 	}
 
-	XrCompositionLayerProjection projection_layer = {
+	render_state.projection_layer = {
 		XR_TYPE_COMPOSITION_LAYER_PROJECTION, // type
 		nullptr, // next
 		layer_flags, // layerFlags
@@ -2447,7 +2459,7 @@ void OpenXRAPI::end_frame() {
 		render_state.view_count, // viewCount
 		render_state.projection_views, // views
 	};
-	ordered_layers_list.push_back({ (const XrCompositionLayerBaseHeader *)&projection_layer, 0 });
+	ordered_layers_list.push_back({ (const XrCompositionLayerBaseHeader *)&render_state.projection_layer, 0 });
 
 	// Sort our layers.
 	ordered_layers_list.sort_custom<OrderedCompositionLayer>();
@@ -2507,6 +2519,14 @@ double OpenXRAPI::get_render_target_size_multiplier() const {
 void OpenXRAPI::set_render_target_size_multiplier(double multiplier) {
 	render_target_size_multiplier = multiplier;
 	set_render_state_multiplier(multiplier);
+}
+
+Size2i OpenXRAPI::get_render_target_size_override() {
+	return render_target_size_override;
+}
+
+void OpenXRAPI::set_render_target_size_override(Size2i p_render_target_size_override) {
+	render_target_size_override = p_render_target_size_override;
 }
 
 bool OpenXRAPI::is_foveation_supported() const {

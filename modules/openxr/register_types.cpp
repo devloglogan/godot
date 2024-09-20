@@ -58,6 +58,7 @@
 #include "extensions/openxr_huawei_controller_extension.h"
 #include "extensions/openxr_local_floor_extension.h"
 #include "extensions/openxr_meta_controller_extension.h"
+#include "extensions/openxr_meta_recommended_layer_resolution_extension_wrapper.h"
 #include "extensions/openxr_ml2_controller_extension.h"
 #include "extensions/openxr_mxink_extension.h"
 #include "extensions/openxr_palm_pose_extension.h"
@@ -132,6 +133,8 @@ void initialize_openxr_module(ModuleInitializationLevel p_level) {
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRHandInteractionExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRMxInkExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRVisibilityMaskExtension));
+			ClassDB::register_class<OpenXRMetaRecommendedLayerResolutionExtensionWrapper>();
+			OpenXRAPI::register_extension_wrapper(memnew(OpenXRMetaRecommendedLayerResolutionExtensionWrapper));
 
 			// register gated extensions
 			if (int(GLOBAL_GET("xr/openxr/extensions/debug_utils")) > 0) {
@@ -187,6 +190,8 @@ void initialize_openxr_module(ModuleInitializationLevel p_level) {
 		GDREGISTER_CLASS(OpenXRCompositionLayerQuad);
 
 		GDREGISTER_CLASS(OpenXRHand);
+
+		Engine::get_singleton()->add_singleton(Engine::Singleton("OpenXRMetaRecommendedLayerResolutionExtensionWrapper", OpenXRMetaRecommendedLayerResolutionExtensionWrapper::get_singleton()));
 
 		GDREGISTER_CLASS(OpenXRVisibilityMask);
 
