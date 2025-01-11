@@ -144,8 +144,7 @@ private:
 	OpenXRGraphicsExtensionWrapper *graphics_extension = nullptr;
 	XrSystemGraphicsProperties graphics_properties;
 
-	uint32_t view_count = 0;
-	XrViewConfigurationView *view_configuration_views = nullptr;
+	LocalVector<XrViewConfigurationView> view_configuration_views;
 
 	enum OpenXRSwapChainTypes {
 		OPENXR_SWAPCHAIN_COLOR,
@@ -339,10 +338,9 @@ private:
 		double render_target_size_multiplier = 1.0;
 		uint64_t frame = 0;
 
-		uint32_t view_count = 0;
-		XrView *views = nullptr;
-		XrCompositionLayerProjectionView *projection_views = nullptr;
-		XrCompositionLayerDepthInfoKHR *depth_views = nullptr; // Only used by Composition Layer Depth Extension if available
+		Vector<XrView> views;
+		Vector<XrCompositionLayerProjectionView> projection_views;
+		Vector<XrCompositionLayerDepthInfoKHR> depth_views; // Only used by Composition Layer Depth Extension if available
 		bool submit_depth_buffer = false; // if set to true we submit depth buffers to OpenXR if a suitable extension is enabled.
 		bool view_pose_valid = false;
 
