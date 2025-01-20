@@ -35,6 +35,7 @@
 #include "openxr_extension_wrapper.h"
 
 #include "../openxr_api.h"
+#include "../scene/openxr_composition_layer.h"
 
 #ifdef ANDROID_ENABLED
 #include <jni.h>
@@ -96,6 +97,21 @@ private:
 #endif
 };
 
+struct SwapchainState {
+	OpenXRCompositionLayer::Filter min_filter = OpenXRCompositionLayer::Filter::FILTER_LINEAR;
+	OpenXRCompositionLayer::Filter mag_filter = OpenXRCompositionLayer::Filter::FILTER_LINEAR;
+	OpenXRCompositionLayer::MipmapMode mipmap_mode = OpenXRCompositionLayer::MipmapMode::MIPMAP_MODE_LINEAR;
+	OpenXRCompositionLayer::Wrap horizontal_wrap = OpenXRCompositionLayer::Wrap::WRAP_CLAMP_TO_BORDER;
+	OpenXRCompositionLayer::Wrap vertical_wrap = OpenXRCompositionLayer::Wrap::WRAP_CLAMP_TO_BORDER;
+	OpenXRCompositionLayer::Swizzle red_swizzle = OpenXRCompositionLayer::Swizzle::SWIZZLE_RED;
+	OpenXRCompositionLayer::Swizzle green_swizzle = OpenXRCompositionLayer::Swizzle::SWIZZLE_GREEN;
+	OpenXRCompositionLayer::Swizzle blue_swizzle = OpenXRCompositionLayer::Swizzle::SWIZZLE_BLUE;
+	OpenXRCompositionLayer::Swizzle alpha_swizzle = OpenXRCompositionLayer::Swizzle::SWIZZLE_ALPHA;
+	float max_anisotropy = 1.0;
+	Color border_color = { 0.0, 0.0, 0.0, 0.0 };
+	bool dirty = false;
+};
+
 class OpenXRViewportCompositionLayerProvider {
 	XrCompositionLayerBaseHeader *composition_layer = nullptr;
 	int sort_order = 1;
@@ -130,6 +146,8 @@ class OpenXRViewportCompositionLayerProvider {
 	void update_swapchain_sub_image(XrSwapchainSubImage &r_swapchain_sub_image);
 	void free_swapchain();
 
+	SwapchainState swapchain_state;
+
 #ifdef ANDROID_ENABLED
 	void create_android_surface();
 #endif
@@ -155,6 +173,9 @@ public:
 
 	void on_pre_render();
 	XrCompositionLayerBaseHeader *get_composition_layer();
+
+	void update_swapchain_state();
+	SwapchainState *get_swapchain_state();
 
 	OpenXRViewportCompositionLayerProvider(XrCompositionLayerBaseHeader *p_composition_layer);
 	~OpenXRViewportCompositionLayerProvider();
