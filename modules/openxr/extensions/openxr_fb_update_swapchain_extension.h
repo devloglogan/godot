@@ -38,11 +38,11 @@
 
 #include "../openxr_api.h"
 #include "../util.h"
-#include "openxr_composition_layer_extension.h"
 #include "openxr_extension_wrapper.h"
 
 class OpenXRFBUpdateSwapchainExtension : public OpenXRExtensionWrapper {
 	friend class OpenXRFBFoveationExtension;
+	friend class OpenXRViewportCompositionLayerProvider;
 
 public:
 	static OpenXRFBUpdateSwapchainExtension *get_singleton();
@@ -56,11 +56,6 @@ public:
 	virtual void on_instance_destroyed() override;
 
 	bool is_enabled() const;
-	bool is_android_ext_enabled() const;
-
-	void update_swapchain_state(XrSwapchain p_swapchain, const SwapchainState &p_swapchain_state);
-
-	void update_swapchain_surface_size(XrSwapchain p_swapchain, const Size2i &p_size);
 
 private:
 	static OpenXRFBUpdateSwapchainExtension *singleton;
@@ -70,16 +65,6 @@ private:
 	bool fb_swapchain_update_state_ext = false;
 	bool fb_swapchain_update_state_vulkan_ext = false;
 	bool fb_swapchain_update_state_opengles_ext = false;
-	bool fb_swapchain_update_state_android_ext = false;
-
-	uint32_t filter_to_gl(OpenXRCompositionLayer::Filter p_filter, OpenXRCompositionLayer::MipmapMode p_mipmap_mode = OpenXRCompositionLayer::MipmapMode::MIPMAP_MODE_DISABLED);
-	uint32_t wrap_to_gl(OpenXRCompositionLayer::Wrap p_wrap);
-	uint32_t swizzle_to_gl(OpenXRCompositionLayer::Swizzle p_swizzle);
-
-	uint32_t filter_to_vk(OpenXRCompositionLayer::Filter p_filter);
-	uint32_t mipmap_mode_to_vk(OpenXRCompositionLayer::MipmapMode p_mipmap);
-	uint32_t wrap_to_vk(OpenXRCompositionLayer::Wrap p_wrap);
-	uint32_t swizzle_to_vk(OpenXRCompositionLayer::Swizzle p_swizzle);
 
 	// OpenXR API call wrappers
 	EXT_PROTO_XRRESULT_FUNC2(xrUpdateSwapchainFB, (XrSwapchain), swapchain, (const XrSwapchainStateBaseHeaderFB *), state);

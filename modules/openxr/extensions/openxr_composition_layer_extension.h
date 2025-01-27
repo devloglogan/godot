@@ -74,6 +74,8 @@ public:
 	bool is_available(XrStructureType p_which);
 	bool is_android_surface_swapchain_available() { return android_surface_ext_available; }
 
+	bool is_android_ext_enabled() const;
+
 #ifdef ANDROID_ENABLED
 	bool create_android_surface_swapchain(XrSwapchainCreateInfo *p_info, XrSwapchain *r_swapchain, jobject *r_surface);
 	void free_android_surface_swapchain(XrSwapchain p_swapchain);
@@ -87,6 +89,7 @@ private:
 	bool cylinder_ext_available = false;
 	bool equirect_ext_available = false;
 	bool android_surface_ext_available = false;
+	bool fb_swapchain_update_state_android_ext = false;
 
 #ifdef ANDROID_ENABLED
 	Vector<XrSwapchain> android_surface_swapchain_free_queue;
@@ -146,6 +149,15 @@ class OpenXRViewportCompositionLayerProvider {
 	void update_swapchain_sub_image(XrSwapchainSubImage &r_swapchain_sub_image);
 	void free_swapchain();
 
+	uint32_t filter_to_gl(OpenXRCompositionLayer::Filter p_filter, OpenXRCompositionLayer::MipmapMode p_mipmap_mode = OpenXRCompositionLayer::MipmapMode::MIPMAP_MODE_DISABLED);
+	uint32_t wrap_to_gl(OpenXRCompositionLayer::Wrap p_wrap);
+	uint32_t swizzle_to_gl(OpenXRCompositionLayer::Swizzle p_swizzle);
+
+	uint32_t filter_to_vk(OpenXRCompositionLayer::Filter p_filter);
+	uint32_t mipmap_mode_to_vk(OpenXRCompositionLayer::MipmapMode p_mipmap);
+	uint32_t wrap_to_vk(OpenXRCompositionLayer::Wrap p_wrap);
+	uint32_t swizzle_to_vk(OpenXRCompositionLayer::Swizzle p_swizzle);
+
 	SwapchainState swapchain_state;
 
 #ifdef ANDROID_ENABLED
@@ -176,6 +188,9 @@ public:
 
 	void update_swapchain_state();
 	SwapchainState *get_swapchain_state();
+
+	void update_swapchain_state(XrSwapchain p_swapchain, const SwapchainState &p_swapchain_state);
+	void update_swapchain_surface_size(XrSwapchain p_swapchain, const Size2i &p_size);
 
 	OpenXRViewportCompositionLayerProvider(XrCompositionLayerBaseHeader *p_composition_layer);
 	~OpenXRViewportCompositionLayerProvider();
