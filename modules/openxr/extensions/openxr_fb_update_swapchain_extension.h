@@ -38,6 +38,7 @@
 
 #include "../openxr_api.h"
 #include "../util.h"
+#include "openxr_composition_layer_extension.h"
 #include "openxr_extension_wrapper.h"
 
 struct SwapchainState;
@@ -46,35 +47,6 @@ class OpenXRFBUpdateSwapchainExtension : public OpenXRExtensionWrapper {
 	friend class OpenXRFBFoveationExtension;
 
 public:
-	enum Filter {
-		FILTER_NEAREST,
-		FILTER_LINEAR,
-		FILTER_CUBIC,
-	};
-
-	enum MipmapMode {
-		MIPMAP_MODE_DISABLED,
-		MIPMAP_MODE_NEAREST,
-		MIPMAP_MODE_LINEAR,
-	};
-
-	enum Wrap {
-		WRAP_CLAMP_TO_BORDER,
-		WRAP_CLAMP_TO_EDGE,
-		WRAP_REPEAT,
-		WRAP_MIRRORED_REPEAT,
-		WRAP_MIRROR_CLAMP_TO_EDGE,
-	};
-
-	enum Swizzle {
-		SWIZZLE_RED,
-		SWIZZLE_GREEN,
-		SWIZZLE_BLUE,
-		SWIZZLE_ALPHA,
-		SWIZZLE_ZERO,
-		SWIZZLE_ONE,
-	};
-
 	static OpenXRFBUpdateSwapchainExtension *get_singleton();
 
 	OpenXRFBUpdateSwapchainExtension(const String &p_rendering_driver);
@@ -102,14 +74,14 @@ private:
 	bool fb_swapchain_update_state_opengles_ext = false;
 	bool fb_swapchain_update_state_android_ext = false;
 
-	uint32_t filter_to_gl(Filter p_filter, MipmapMode p_mipmap_mode = MipmapMode::MIPMAP_MODE_DISABLED);
-	uint32_t wrap_to_gl(Wrap p_wrap);
-	uint32_t swizzle_to_gl(Swizzle p_swizzle);
+	uint32_t filter_to_gl(OpenXRViewportCompositionLayerProvider::Filter p_filter, OpenXRViewportCompositionLayerProvider::MipmapMode p_mipmap_mode = OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_DISABLED);
+	uint32_t wrap_to_gl(OpenXRViewportCompositionLayerProvider::Wrap p_wrap);
+	uint32_t swizzle_to_gl(OpenXRViewportCompositionLayerProvider::Swizzle p_swizzle);
 
-	uint32_t filter_to_vk(Filter p_filter);
-	uint32_t mipmap_mode_to_vk(MipmapMode p_mipmap);
-	uint32_t wrap_to_vk(Wrap p_wrap);
-	uint32_t swizzle_to_vk(Swizzle p_swizzle);
+	uint32_t filter_to_vk(OpenXRViewportCompositionLayerProvider::Filter p_filter);
+	uint32_t mipmap_mode_to_vk(OpenXRViewportCompositionLayerProvider::MipmapMode p_mipmap);
+	uint32_t wrap_to_vk(OpenXRViewportCompositionLayerProvider::Wrap p_wrap);
+	uint32_t swizzle_to_vk(OpenXRViewportCompositionLayerProvider::Swizzle p_swizzle);
 
 	// OpenXR API call wrappers
 	EXT_PROTO_XRRESULT_FUNC2(xrUpdateSwapchainFB, (XrSwapchain), swapchain, (const XrSwapchainStateBaseHeaderFB *), state);

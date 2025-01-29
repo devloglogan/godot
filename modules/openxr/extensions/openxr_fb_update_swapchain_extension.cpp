@@ -30,8 +30,6 @@
 
 #include "openxr_fb_update_swapchain_extension.h"
 
-#include "openxr_composition_layer_extension.h"
-
 // Always include this as late as possible.
 #include "../openxr_platform_inc.h"
 
@@ -135,15 +133,15 @@ void OpenXRFBUpdateSwapchainExtension::update_swapchain_state(XrSwapchain p_swap
 		XrSwapchainStateSamplerVulkanFB swapchain_state = {
 			XR_TYPE_SWAPCHAIN_STATE_SAMPLER_VULKAN_FB, // type
 			nullptr, // next
-			(VkFilter)filter_to_vk((Filter)p_swapchain_state.min_filter), // minFilter
-			(VkFilter)filter_to_vk((Filter)p_swapchain_state.mag_filter), // magFilter
-			(VkSamplerMipmapMode)mipmap_mode_to_vk((MipmapMode)p_swapchain_state.mipmap_mode), // mipmapMode
-			(VkSamplerAddressMode)wrap_to_vk((Wrap)p_swapchain_state.horizontal_wrap), // wrapModeS;
-			(VkSamplerAddressMode)wrap_to_vk((Wrap)p_swapchain_state.vertical_wrap), // wrapModeT
-			(VkComponentSwizzle)swizzle_to_vk((Swizzle)p_swapchain_state.red_swizzle), // swizzleRed
-			(VkComponentSwizzle)swizzle_to_vk((Swizzle)p_swapchain_state.green_swizzle), // swizzleGreen
-			(VkComponentSwizzle)swizzle_to_vk((Swizzle)p_swapchain_state.blue_swizzle), // swizzleBlue
-			(VkComponentSwizzle)swizzle_to_vk((Swizzle)p_swapchain_state.alpha_swizzle), // swizzleAlpha
+			(VkFilter)filter_to_vk(p_swapchain_state.min_filter), // minFilter
+			(VkFilter)filter_to_vk(p_swapchain_state.mag_filter), // magFilter
+			(VkSamplerMipmapMode)mipmap_mode_to_vk(p_swapchain_state.mipmap_mode), // mipmapMode
+			(VkSamplerAddressMode)wrap_to_vk(p_swapchain_state.horizontal_wrap), // wrapModeS;
+			(VkSamplerAddressMode)wrap_to_vk(p_swapchain_state.vertical_wrap), // wrapModeT
+			(VkComponentSwizzle)swizzle_to_vk(p_swapchain_state.red_swizzle), // swizzleRed
+			(VkComponentSwizzle)swizzle_to_vk(p_swapchain_state.green_swizzle), // swizzleGreen
+			(VkComponentSwizzle)swizzle_to_vk(p_swapchain_state.blue_swizzle), // swizzleBlue
+			(VkComponentSwizzle)swizzle_to_vk(p_swapchain_state.alpha_swizzle), // swizzleAlpha
 			p_swapchain_state.max_anisotropy, // maxAnisotropy
 			{ border_color.r, border_color.g, border_color.b, border_color.a } // borderColor
 		};
@@ -164,14 +162,14 @@ void OpenXRFBUpdateSwapchainExtension::update_swapchain_state(XrSwapchain p_swap
 		XrSwapchainStateSamplerOpenGLESFB swapchain_state = {
 			XR_TYPE_SWAPCHAIN_STATE_SAMPLER_OPENGL_ES_FB, // type
 			nullptr, // next
-			filter_to_gl((Filter)p_swapchain_state.min_filter, (MipmapMode)p_swapchain_state.mipmap_mode), // minFilter
-			filter_to_gl((Filter)p_swapchain_state.mag_filter), // magFilter
-			wrap_to_gl((Wrap)p_swapchain_state.horizontal_wrap), // wrapModeS;
-			wrap_to_gl((Wrap)p_swapchain_state.vertical_wrap), // wrapModeT
-			swizzle_to_gl((Swizzle)p_swapchain_state.red_swizzle), // swizzleRed
-			swizzle_to_gl((Swizzle)p_swapchain_state.green_swizzle), // swizzleGreen
-			swizzle_to_gl((Swizzle)p_swapchain_state.blue_swizzle), // swizzleBlue
-			swizzle_to_gl((Swizzle)p_swapchain_state.alpha_swizzle), // swizzleAlpha
+			filter_to_gl(p_swapchain_state.min_filter, p_swapchain_state.mipmap_mode), // minFilter
+			filter_to_gl(p_swapchain_state.mag_filter), // magFilter
+			wrap_to_gl(p_swapchain_state.horizontal_wrap), // wrapModeS;
+			wrap_to_gl(p_swapchain_state.vertical_wrap), // wrapModeT
+			swizzle_to_gl(p_swapchain_state.red_swizzle), // swizzleRed
+			swizzle_to_gl(p_swapchain_state.green_swizzle), // swizzleGreen
+			swizzle_to_gl(p_swapchain_state.blue_swizzle), // swizzleBlue
+			swizzle_to_gl(p_swapchain_state.alpha_swizzle), // swizzleAlpha
 			p_swapchain_state.max_anisotropy, // maxAnisotropy
 			{ border_color.r, border_color.g, border_color.b, border_color.a } // borderColor
 		};
@@ -205,34 +203,34 @@ void OpenXRFBUpdateSwapchainExtension::update_swapchain_surface_size(XrSwapchain
 #endif
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::filter_to_gl(OpenXRFBUpdateSwapchainExtension::Filter p_filter, OpenXRFBUpdateSwapchainExtension::MipmapMode p_mipmap_mode) {
+uint32_t OpenXRFBUpdateSwapchainExtension::filter_to_gl(OpenXRViewportCompositionLayerProvider::Filter p_filter, OpenXRViewportCompositionLayerProvider::MipmapMode p_mipmap_mode) {
 #ifdef XR_USE_GRAPHICS_API_OPENGL_ES
 	switch (p_mipmap_mode) {
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_DISABLED:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_DISABLED:
 			switch (p_filter) {
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_NEAREST:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_NEAREST:
 					return GL_NEAREST;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_LINEAR:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_LINEAR:
 					return GL_LINEAR;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_CUBIC:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_CUBIC:
 					return GL_CUBIC_IMG;
 			}
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_NEAREST:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_NEAREST:
 			switch (p_filter) {
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_NEAREST:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_NEAREST:
 					return GL_NEAREST_MIPMAP_NEAREST;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_LINEAR:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_LINEAR:
 					return GL_LINEAR_MIPMAP_NEAREST;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_CUBIC:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_CUBIC:
 					return GL_CUBIC_MIPMAP_NEAREST_IMG;
 			}
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_LINEAR:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_LINEAR:
 			switch (p_filter) {
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_NEAREST:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_NEAREST:
 					return GL_NEAREST_MIPMAP_LINEAR;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_LINEAR:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_LINEAR:
 					return GL_LINEAR_MIPMAP_LINEAR;
-				case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_CUBIC:
+				case OpenXRViewportCompositionLayerProvider::Filter::FILTER_CUBIC:
 					return GL_CUBIC_MIPMAP_LINEAR_IMG;
 			}
 	}
@@ -240,104 +238,104 @@ uint32_t OpenXRFBUpdateSwapchainExtension::filter_to_gl(OpenXRFBUpdateSwapchainE
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::wrap_to_gl(OpenXRFBUpdateSwapchainExtension::Wrap p_wrap) {
+uint32_t OpenXRFBUpdateSwapchainExtension::wrap_to_gl(OpenXRViewportCompositionLayerProvider::Wrap p_wrap) {
 #ifdef XR_USE_GRAPHICS_API_OPENGL_ES
 	switch (p_wrap) {
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_CLAMP_TO_BORDER:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_CLAMP_TO_BORDER:
 			return GL_CLAMP_TO_BORDER;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_CLAMP_TO_EDGE:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_CLAMP_TO_EDGE:
 			return GL_CLAMP_TO_EDGE;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_REPEAT:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_REPEAT:
 			return GL_REPEAT;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_MIRRORED_REPEAT:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_MIRRORED_REPEAT:
 			return GL_MIRRORED_REPEAT;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_MIRROR_CLAMP_TO_EDGE:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_MIRROR_CLAMP_TO_EDGE:
 			return GL_CLAMP_TO_EDGE;
 	}
 #endif
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::swizzle_to_gl(OpenXRFBUpdateSwapchainExtension::Swizzle p_swizzle) {
+uint32_t OpenXRFBUpdateSwapchainExtension::swizzle_to_gl(OpenXRViewportCompositionLayerProvider::Swizzle p_swizzle) {
 #ifdef XR_USE_GRAPHICS_API_OPENGL_ES
 	switch (p_swizzle) {
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_RED:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_RED:
 			return GL_RED;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_GREEN:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_GREEN:
 			return GL_GREEN;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_BLUE:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_BLUE:
 			return GL_BLUE;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ALPHA:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ALPHA:
 			return GL_ALPHA;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ZERO:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ZERO:
 			return GL_ZERO;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ONE:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ONE:
 			return GL_ONE;
 	}
 #endif
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::filter_to_vk(OpenXRFBUpdateSwapchainExtension::Filter p_filter) {
+uint32_t OpenXRFBUpdateSwapchainExtension::filter_to_vk(OpenXRViewportCompositionLayerProvider::Filter p_filter) {
 #ifdef XR_USE_GRAPHICS_API_VULKAN
 	switch (p_filter) {
-		case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_NEAREST:
+		case OpenXRViewportCompositionLayerProvider::Filter::FILTER_NEAREST:
 			return VK_FILTER_NEAREST;
-		case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_LINEAR:
+		case OpenXRViewportCompositionLayerProvider::Filter::FILTER_LINEAR:
 			return VK_FILTER_LINEAR;
-		case OpenXRFBUpdateSwapchainExtension::Filter::FILTER_CUBIC:
+		case OpenXRViewportCompositionLayerProvider::Filter::FILTER_CUBIC:
 			return VK_FILTER_CUBIC_EXT;
 	}
 #endif
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::mipmap_mode_to_vk(OpenXRFBUpdateSwapchainExtension::MipmapMode p_mipmap_mode) {
+uint32_t OpenXRFBUpdateSwapchainExtension::mipmap_mode_to_vk(OpenXRViewportCompositionLayerProvider::MipmapMode p_mipmap_mode) {
 #ifdef XR_USE_GRAPHICS_API_VULKAN
 	switch (p_mipmap_mode) {
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_DISABLED:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_DISABLED:
 			return VK_SAMPLER_MIPMAP_MODE_LINEAR;
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_NEAREST:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_NEAREST:
 			return VK_SAMPLER_MIPMAP_MODE_NEAREST;
-		case OpenXRFBUpdateSwapchainExtension::MipmapMode::MIPMAP_MODE_LINEAR:
+		case OpenXRViewportCompositionLayerProvider::MipmapMode::MIPMAP_MODE_LINEAR:
 			return VK_SAMPLER_MIPMAP_MODE_LINEAR;
 	}
 #endif
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::wrap_to_vk(OpenXRFBUpdateSwapchainExtension::Wrap p_wrap) {
+uint32_t OpenXRFBUpdateSwapchainExtension::wrap_to_vk(OpenXRViewportCompositionLayerProvider::Wrap p_wrap) {
 #ifdef XR_USE_GRAPHICS_API_VULKAN
 	switch (p_wrap) {
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_CLAMP_TO_BORDER:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_CLAMP_TO_BORDER:
 			return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_CLAMP_TO_EDGE:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_CLAMP_TO_EDGE:
 			return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_REPEAT:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_REPEAT:
 			return VK_SAMPLER_ADDRESS_MODE_REPEAT;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_MIRRORED_REPEAT:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_MIRRORED_REPEAT:
 			return VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
-		case OpenXRFBUpdateSwapchainExtension::Wrap::WRAP_MIRROR_CLAMP_TO_EDGE:
+		case OpenXRViewportCompositionLayerProvider::Wrap::WRAP_MIRROR_CLAMP_TO_EDGE:
 			return VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE;
 	}
 #endif
 	return 0;
 }
 
-uint32_t OpenXRFBUpdateSwapchainExtension::swizzle_to_vk(OpenXRFBUpdateSwapchainExtension::Swizzle p_swizzle) {
+uint32_t OpenXRFBUpdateSwapchainExtension::swizzle_to_vk(OpenXRViewportCompositionLayerProvider::Swizzle p_swizzle) {
 #ifdef XR_USE_GRAPHICS_API_VULKAN
 	switch (p_swizzle) {
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_RED:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_RED:
 			return VK_COMPONENT_SWIZZLE_R;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_GREEN:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_GREEN:
 			return VK_COMPONENT_SWIZZLE_G;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_BLUE:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_BLUE:
 			return VK_COMPONENT_SWIZZLE_B;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ALPHA:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ALPHA:
 			return VK_COMPONENT_SWIZZLE_A;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ZERO:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ZERO:
 			return VK_COMPONENT_SWIZZLE_ZERO;
-		case OpenXRFBUpdateSwapchainExtension::Swizzle::SWIZZLE_ONE:
+		case OpenXRViewportCompositionLayerProvider::Swizzle::SWIZZLE_ONE:
 			return VK_COMPONENT_SWIZZLE_ONE;
 	}
 #endif
