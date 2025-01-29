@@ -176,6 +176,7 @@ OpenXRViewportCompositionLayerProvider::OpenXRViewportCompositionLayerProvider(X
 	composition_layer = p_composition_layer;
 	openxr_api = OpenXRAPI::get_singleton();
 	composition_layer_extension = OpenXRCompositionLayerExtension::get_singleton();
+	swapchain_state = memnew(SwapchainState);
 }
 
 OpenXRViewportCompositionLayerProvider::~OpenXRViewportCompositionLayerProvider() {
@@ -189,6 +190,8 @@ OpenXRViewportCompositionLayerProvider::~OpenXRViewportCompositionLayerProvider(
 		// This will reset the viewport and free the swapchain too.
 		set_viewport(RID(), Size2i());
 	}
+
+	memdelete(swapchain_state);
 }
 
 void OpenXRViewportCompositionLayerProvider::set_alpha_blend(bool p_alpha_blend) {
@@ -288,7 +291,7 @@ void OpenXRViewportCompositionLayerProvider::create_android_surface() {
 	jobject surface;
 	composition_layer_extension->create_android_surface_swapchain(&info, &android_surface.swapchain, &surface);
 
-	swapchain_state.dirty = true;
+	swapchain_state->dirty = true;
 
 	if (surface) {
 		android_surface.surface.instantiate(JavaClassWrapper::get_singleton()->wrap("android.view.Surface"), surface);
@@ -338,9 +341,9 @@ void OpenXRViewportCompositionLayerProvider::on_pre_render() {
 		}
 	}
 
-	if (swapchain_state.dirty) {
+	if (swapchain_state->dirty) {
 		update_swapchain_state();
-		swapchain_state.dirty = false;
+		swapchain_state->dirty = false;
 	}
 }
 
@@ -420,7 +423,7 @@ void OpenXRViewportCompositionLayerProvider::update_swapchain_state() {
 			return;
 		}
 
-		fb_update_swapchain_ext->update_swapchain_state(android_surface.swapchain, swapchain_state);
+		fb_update_swapchain_ext->update_swapchain_state(android_surface.swapchain, *swapchain_state);
 	} else
 #endif
 	{
@@ -428,12 +431,12 @@ void OpenXRViewportCompositionLayerProvider::update_swapchain_state() {
 			return;
 		}
 
-		fb_update_swapchain_ext->update_swapchain_state(subviewport.swapchain_info.get_swapchain(), swapchain_state);
+		fb_update_swapchain_ext->update_swapchain_state(subviewport.swapchain_info.get_swapchain(), *swapchain_state);
 	}
 }
 
 SwapchainState *OpenXRViewportCompositionLayerProvider::get_swapchain_state() {
-	return &swapchain_state;
+	return swapchain_state;
 }
 
 void OpenXRViewportCompositionLayerProvider::update_swapchain_sub_image(XrSwapchainSubImage &r_subimage) {
@@ -494,7 +497,7 @@ bool OpenXRViewportCompositionLayerProvider::update_and_acquire_swapchain(bool p
 		return false;
 	}
 
-	swapchain_state.dirty = true;
+	swapchain_state->dirty = true;
 
 	// Acquire our image so we can start rendering into it,
 	// we can ignore should_render here, ret will be false.

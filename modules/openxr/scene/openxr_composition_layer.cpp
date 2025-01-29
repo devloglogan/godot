@@ -407,120 +407,120 @@ bool OpenXRCompositionLayer::is_natively_supported() const {
 }
 
 void OpenXRCompositionLayer::set_min_filter(Filter p_mode) {
-	if (swapchain_state->min_filter == p_mode) {
+	if (swapchain_state->min_filter == (OpenXRViewportCompositionLayerProvider::Filter)p_mode) {
 		return;
 	}
 
-	swapchain_state->min_filter = p_mode;
+	swapchain_state->min_filter = (OpenXRViewportCompositionLayerProvider::Filter)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Filter OpenXRCompositionLayer::get_min_filter() {
-	return swapchain_state->min_filter;
+	return (OpenXRCompositionLayer::Filter)swapchain_state->min_filter;
 }
 
 void OpenXRCompositionLayer::set_mag_filter(Filter p_mode) {
-	if (swapchain_state->mag_filter == p_mode) {
+	if (swapchain_state->mag_filter == (OpenXRViewportCompositionLayerProvider::Filter)p_mode) {
 		return;
 	}
 
-	swapchain_state->mag_filter = p_mode;
+	swapchain_state->mag_filter = (OpenXRViewportCompositionLayerProvider::Filter)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Filter OpenXRCompositionLayer::get_mag_filter() {
-	return swapchain_state->mag_filter;
+	return (OpenXRCompositionLayer::Filter)swapchain_state->mag_filter;
 }
 
 void OpenXRCompositionLayer::set_mipmap_mode(MipmapMode p_mode) {
-	if (swapchain_state->mipmap_mode == p_mode) {
+	if (swapchain_state->mipmap_mode == (OpenXRViewportCompositionLayerProvider::MipmapMode)p_mode) {
 		return;
 	}
 
-	swapchain_state->mipmap_mode = p_mode;
+	swapchain_state->mipmap_mode = (OpenXRViewportCompositionLayerProvider::MipmapMode)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::MipmapMode OpenXRCompositionLayer::get_mipmap_mode() {
-	return swapchain_state->mipmap_mode;
+	return (OpenXRCompositionLayer::MipmapMode)swapchain_state->mipmap_mode;
 }
 
 void OpenXRCompositionLayer::set_horizontal_wrap(Wrap p_mode) {
-	if (swapchain_state->horizontal_wrap == p_mode) {
+	if (swapchain_state->horizontal_wrap == (OpenXRViewportCompositionLayerProvider::Wrap)p_mode) {
 		return;
 	}
 
-	swapchain_state->horizontal_wrap = p_mode;
+	swapchain_state->horizontal_wrap = (OpenXRViewportCompositionLayerProvider::Wrap)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Wrap OpenXRCompositionLayer::get_horizontal_wrap() {
-	return swapchain_state->horizontal_wrap;
+	return (OpenXRCompositionLayer::Wrap)swapchain_state->horizontal_wrap;
 }
 
 void OpenXRCompositionLayer::set_vertical_wrap(Wrap p_mode) {
-	if (swapchain_state->vertical_wrap == p_mode) {
+	if (swapchain_state->vertical_wrap == (OpenXRViewportCompositionLayerProvider::Wrap)p_mode) {
 		return;
 	}
 
-	swapchain_state->vertical_wrap = p_mode;
+	swapchain_state->vertical_wrap = (OpenXRViewportCompositionLayerProvider::Wrap)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Wrap OpenXRCompositionLayer::get_vertical_wrap() {
-	return swapchain_state->vertical_wrap;
+	return (OpenXRCompositionLayer::Wrap)swapchain_state->vertical_wrap;
 }
 
 void OpenXRCompositionLayer::set_red_swizzle(Swizzle p_mode) {
-	if (swapchain_state->red_swizzle == p_mode) {
+	if (swapchain_state->red_swizzle == (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode) {
 		return;
 	}
 
-	swapchain_state->red_swizzle = p_mode;
+	swapchain_state->red_swizzle = (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Swizzle OpenXRCompositionLayer::get_red_swizzle() {
-	return swapchain_state->red_swizzle;
+	return (OpenXRCompositionLayer::Swizzle)swapchain_state->red_swizzle;
 }
 
 void OpenXRCompositionLayer::set_green_swizzle(Swizzle p_mode) {
-	if (swapchain_state->green_swizzle == p_mode) {
+	if (swapchain_state->green_swizzle == (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode) {
 		return;
 	}
 
-	swapchain_state->green_swizzle = p_mode;
+	swapchain_state->green_swizzle = (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Swizzle OpenXRCompositionLayer::get_green_swizzle() {
-	return swapchain_state->green_swizzle;
+	return (OpenXRCompositionLayer::Swizzle)swapchain_state->green_swizzle;
 }
 
 void OpenXRCompositionLayer::set_blue_swizzle(Swizzle p_mode) {
-	if (swapchain_state->blue_swizzle == p_mode) {
+	if (swapchain_state->blue_swizzle == (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode) {
 		return;
 	}
 
-	swapchain_state->blue_swizzle = p_mode;
+	swapchain_state->blue_swizzle = (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Swizzle OpenXRCompositionLayer::get_blue_swizzle() {
-	return swapchain_state->blue_swizzle;
+	return (OpenXRCompositionLayer::Swizzle)swapchain_state->blue_swizzle;
 }
 
 void OpenXRCompositionLayer::set_alpha_swizzle(Swizzle p_mode) {
-	if (swapchain_state->alpha_swizzle == p_mode) {
+	if (swapchain_state->alpha_swizzle == (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode) {
 		return;
 	}
 
-	swapchain_state->alpha_swizzle = p_mode;
+	swapchain_state->alpha_swizzle = (OpenXRViewportCompositionLayerProvider::Swizzle)p_mode;
 	swapchain_state->dirty = true;
 }
 
 OpenXRCompositionLayer::Swizzle OpenXRCompositionLayer::get_alpha_swizzle() {
-	return swapchain_state->alpha_swizzle;
+	return (OpenXRCompositionLayer::Swizzle)swapchain_state->alpha_swizzle;
 }
 
 void OpenXRCompositionLayer::set_max_anisotropy(float p_value) {
