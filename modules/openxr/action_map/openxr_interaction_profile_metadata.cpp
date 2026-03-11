@@ -246,6 +246,7 @@ void OpenXRInteractionProfileMetadata::_register_core_metadata() {
 	register_top_level_path("Head", "/user/head", "");
 	register_top_level_path("Gamepad", "/user/gamepad", "");
 	register_top_level_path("Treadmill", "/user/treadmill", "");
+	register_top_level_path("Mouse", "/user/mouse", "XR_ANDROID_mouse_interaction");
 
 	{ // Fallback Khronos simple controller
 		const String profile_path = "/interaction_profiles/khr/simple_controller";

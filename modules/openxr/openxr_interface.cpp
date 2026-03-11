@@ -30,6 +30,7 @@
 
 #include "openxr_interface.h"
 
+#include "extensions/openxr_android_mouse_interaction_extension.h"
 #include "extensions/openxr_eye_gaze_interaction.h"
 #include "extensions/openxr_hand_interaction_extension.h"
 #include "extensions/openxr_performance_settings_extension.h"
@@ -114,6 +115,7 @@ void OpenXRInterface::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("is_hand_tracking_supported"), &OpenXRInterface::is_hand_tracking_supported);
 	ClassDB::bind_method(D_METHOD("is_hand_interaction_supported"), &OpenXRInterface::is_hand_interaction_supported);
+	ClassDB::bind_method(D_METHOD("is_mouse_interaction_supported"), &OpenXRInterface::is_mouse_interaction_supported);
 	ClassDB::bind_method(D_METHOD("is_eye_gaze_interaction_supported"), &OpenXRInterface::is_eye_gaze_interaction_supported);
 
 	// VRS
@@ -902,6 +904,21 @@ bool OpenXRInterface::is_hand_interaction_supported() const {
 			return false;
 		} else {
 			return hand_interaction_ext->is_available();
+		}
+	}
+}
+
+bool OpenXRInterface::is_mouse_interaction_supported() const {
+	if (openxr_api == nullptr) {
+		return false;
+	} else if (!openxr_api->is_initialized()) {
+		return false;
+	} else {
+		OpenXRAndroidMouseInteractionExtension *mouse_interaction_ext = OpenXRAndroidMouseInteractionExtension ::get_singleton();
+		if (mouse_interaction_ext == nullptr) {
+			return false;
+		} else {
+			return mouse_interaction_ext->is_available();
 		}
 	}
 }

@@ -57,6 +57,7 @@
 #endif
 #include "scene/openxr_visibility_mask.h"
 
+#include "extensions/openxr_android_mouse_interaction_extension.h"
 #include "extensions/openxr_android_thread_settings_extension.h"
 #include "extensions/openxr_composition_layer_depth_extension.h"
 #include "extensions/openxr_composition_layer_extension.h"
@@ -174,6 +175,7 @@ void initialize_openxr_module(ModuleInitializationLevel p_level) {
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRMetaControllerExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXREyeGazeInteractionExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRHandInteractionExtension));
+			OpenXRAPI::register_extension_wrapper(memnew(OpenXRAndroidMouseInteractionExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRMxInkExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRVisibilityMaskExtension));
 			OpenXRAPI::register_extension_wrapper(memnew(OpenXRPerformanceSettingsExtension));

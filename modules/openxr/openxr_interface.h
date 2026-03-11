@@ -137,6 +137,7 @@ public:
 
 	bool is_hand_tracking_supported();
 	bool is_hand_interaction_supported() const;
+	bool is_mouse_interaction_supported() const;
 	bool is_eye_gaze_interaction_supported();
 
 	bool initialize_on_startup() const;
