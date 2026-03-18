@@ -1,0 +1,6 @@
+GH-117399
+--------------
+
+Validate extension JSON: Error: Hash changed for 'classes/OpenXRExtensionWrapper/methods/_on_register_metadata', from BFDD6D64 to 126BA593. This means that the function has changed and no compatibility function was provided.
+
+Added OpenXRInteractionProfileMetadata parameter to function.
