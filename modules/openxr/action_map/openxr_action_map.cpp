@@ -261,14 +261,20 @@ void OpenXRActionMap::create_default_action_sets() {
 			"/user/vive_tracker_htcx/role/right_ankle");
 
 	// Create our interaction profiles.
-	Ref<OpenXRInteractionProfile> profile = OpenXRInteractionProfile::new_profile("/interaction_profiles/khr/simple_controller");
+	Ref<OpenXRInteractionProfile> profile = OpenXRInteractionProfile::new_profile("/interaction_profiles/khr/generic_controller");
 	profile->add_new_binding(default_pose, "/user/hand/left/input/aim/pose,/user/hand/right/input/aim/pose");
 	profile->add_new_binding(aim_pose, "/user/hand/left/input/aim/pose,/user/hand/right/input/aim/pose");
 	profile->add_new_binding(grip_pose, "/user/hand/left/input/grip/pose,/user/hand/right/input/grip/pose");
 	profile->add_new_binding(palm_pose, "/user/hand/left/input/grip_surface/pose,/user/hand/right/input/grip_surface/pose");
-	profile->add_new_binding(menu_button, "/user/hand/left/input/menu/click,/user/hand/right/input/menu/click");
-	profile->add_new_binding(select_button, "/user/hand/left/input/select/click,/user/hand/right/input/select/click");
-	// generic has no support for triggers, grip, A/B buttons, nor joystick/trackpad inputs.
+	// Generic controller has no menu or select buttons we can use.
+	profile->add_new_binding(ax_button, "/user/hand/left/input/primary/click,/user/hand/right/input/primary/click");
+	profile->add_new_binding(by_button, "/user/hand/left/input/secondary/click,/user/hand/right/input/secondary/click");
+	profile->add_new_binding(trigger, "/user/hand/left/input/trigger/value,/user/hand/right/input/trigger/value");
+	profile->add_new_binding(trigger_click, "/user/hand/left/input/trigger/value,/user/hand/right/input/trigger/value"); // OpenXR will convert float to bool.
+	profile->add_new_binding(grip, "/user/hand/left/input/squeeze/value,/user/hand/right/input/squeeze/value");
+	profile->add_new_binding(grip_click, "/user/hand/left/input/squeeze/value,/user/hand/right/input/squeeze/value"); // OpenXR will convert float to bool.
+	profile->add_new_binding(primary, "/user/hand/left/input/thumbstick,/user/hand/right/input/thumbstick");
+	profile->add_new_binding(primary_click, "/user/hand/left/input/thumbstick/click,/user/hand/right/input/thumbstick/click");
 	profile->add_new_binding(haptic, "/user/hand/left/output/haptic,/user/hand/right/output/haptic");
 	add_interaction_profile(profile);
 
