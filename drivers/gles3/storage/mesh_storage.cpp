@@ -2331,7 +2331,12 @@ void GLES3::MeshStorage::multimesh_vertex_attrib_setup(GLuint p_instance_buffer,
 		glVertexAttribDivisor(p_attrib_base_index + 2, 1);
 	}
 
-	if (p_has_color_or_custom_data) {
+	if (p_has_color_or_custom_data && p_stride == 4) {
+		// Hacky custom-data-only multimesh layout: raw floats, no packing, no offset.
+		glEnableVertexAttribArray(p_attrib_base_index + 3);
+		glVertexAttribPointer(p_attrib_base_index + 3, 4, GL_FLOAT, GL_FALSE, p_stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(0));
+		glVertexAttribDivisor(p_attrib_base_index + 3, 1);
+	} else if (p_has_color_or_custom_data) {
 		uint32_t color_custom_offset = p_uses_format_2d ? 8 : 12;
 		glEnableVertexAttribArray(p_attrib_base_index + 3);
 		glVertexAttribIPointer(p_attrib_base_index + 3, 4, GL_UNSIGNED_INT, p_stride * sizeof(float), CAST_INT_TO_UCHAR_PTR(color_custom_offset * sizeof(float)));
