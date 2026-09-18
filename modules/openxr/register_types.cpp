@@ -75,6 +75,7 @@
 #include "extensions/openxr_palm_pose_extension.h"
 #include "extensions/openxr_performance_settings_extension.h"
 #include "extensions/openxr_pico_controller_extension.h"
+#include "extensions/openxr_stationary_reference_space_extension.h"
 #include "extensions/openxr_user_presence_extension.h"
 #include "extensions/openxr_valve_analog_threshold_extension.h"
 #include "extensions/openxr_valve_controller_extension.h"
@@ -170,6 +171,7 @@ void initialize_openxr_module(ModuleInitializationLevel p_level) {
 		GDREGISTER_CLASS(OpenXRRenderModelExtension);
 #endif
 		GDREGISTER_CLASS(OpenXRAndroidThreadSettingsExtension);
+		GDREGISTER_CLASS(OpenXRStationaryReferenceSpaceExtension);
 
 		// Note, we're not registering all wrapper classes here, there is no point in exposing them
 		// if there isn't specific logic to expose.
@@ -224,6 +226,9 @@ void initialize_openxr_module(ModuleInitializationLevel p_level) {
 
 			// Register android thread settings extension as a singleton.
 			_register_extension(memnew(OpenXRAndroidThreadSettingsExtension), true, true);
+
+			// Register stationary reference space extension as a singleton.
+			_register_extension(memnew(OpenXRStationaryReferenceSpaceExtension), true, true);
 
 			// Register user presence extension as a singleton
 			_register_extension(memnew(OpenXRUserPresenceExtension), true, true);

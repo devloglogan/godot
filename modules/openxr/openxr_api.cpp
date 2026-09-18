@@ -3346,6 +3346,9 @@ OpenXRAPI::OpenXRAPI() {
 			case 2: {
 				requested_reference_space = XR_REFERENCE_SPACE_TYPE_LOCAL_FLOOR_EXT;
 			} break;
+			case 3: {
+				requested_reference_space = XR_REFERENCE_SPACE_TYPE_STATIONARY_EXT;
+			} break;
 			default:
 				break;
 		}
